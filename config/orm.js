@@ -57,6 +57,7 @@ let orm = {
 
     updateOne: function (value, id, cb) {
         
+        
         let queryString = "UPDATE burgers SET " + objToSql(value) + " WHERE " + objToSql(id) + ";"
 
         console.log(queryString);

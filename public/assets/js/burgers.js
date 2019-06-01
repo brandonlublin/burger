@@ -3,6 +3,7 @@ $(function() {
     $('#burgerMe').on('click', function(event) {
         event.preventDefault();
         createBurger();
+        location.reload();
     });
     $('#burgerInput').keypress(function(event){
 
@@ -63,5 +64,6 @@ $(function() {
                 
             })
         }
+        location.reload();
     })
 })
