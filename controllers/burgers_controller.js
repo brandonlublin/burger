@@ -1,50 +1,51 @@
-let express = require('express');
 let burger = require('../models/burger.js');
-
-let router = express.Router();
-
-router.get('/', function (req, res) {
-    burger.all(function (data) {
-        let handleObject = {
-            burgers: data
-        };
-        console.log(handleObject);
-        res.render('index', handleObject);
-    });
-});
-
-router.post('/api/burgers', function (req, res) {
-    burger.insert(
-        ['burger_name', 'devoured'],
-        [req.body.burger_name, req.body.devoured], function (res) {
-            res.json({ id: result.insertId });
+module.exports = {
+    selectAll: function(req, res) {
+        burger.selectAll(function (dbFind) {
+            let handleObject = {
+                burgers: dbFind
+            };
+            // console.log(handleObject);
+            res.render('index', handleObject);
         });
-});
+    },
+    insertOne: function(req, res) {
+        burger.insertOne(
+            ['burger_name', 'devoured'],
+            [req.body.burger_name, req.body.devoured], function (dbCreate) {
+                res.json({ id: dbCreate.insertId });
+            });
+    },
+    updateOne: function(req, res) {
+        var id = parseInt(req.params.id);
+        let devour = parseInt(req.body.devoured);
+        (devour ===0) ? devour = 1 : devour = 0;
+        burger.updateOne({
+            devoured: devour
+        }, 
+        {
+            id: id
+        }, function (result) {
+            if (result.changedRows === 0) {
+                // If no rows were changed, then the ID must not exist, so 404
+                return res.json(false).status(404).end();
+            } else {
+                res.json(true).status(200).end();
+            }
+        });
+    },
+    deleteOne: function(req, res) {
+        let condition = 'id = ' + parseInt(req.params.id);
 
-router.put('/api/burgers/:id', function(req,res) {
-    let condition = 'id = ' + req.params.id;
-    console.log('condition' , condition);
-    burger.update({ devoured: req.body.devoured }, condition, function(res) {
-        if (res.changedRows === 0) {
-            return res.status(404).end();
-        } else {
-            res.status(200).end();
-        }
-    })
-});
+        burger.deleteOne(condition, function(dbDelete) {
 
-// router.deleteOne(condition, function(req, res){
-//     let condition = 'id = ' + req.params.id;
-//     console.log('condition' , condition);
+            
+            if (dbDelete.affectedRow === 0) {
+                return res.json(false).status(404);
+            } else {
+                res.json(true).status(200);
+            }
+        });
+    }
+}
 
-//     burger.deleteOne(condition, function(res) {
-//         if ((res.changedRows === 0)) {
-//             return res.status(404).end();
-//         } else {
-//             res.status(200).end();
-//         }
-//     });
-// });
-
-
-module.exports = router;
