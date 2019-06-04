@@ -24,38 +24,39 @@ I chose to create the routes separately from the logic base, so it was more legi
 
 ### HTML Template (Handlebars)
 I used Handlebars as my templating language. below is a code snippet for the dynamically built buttons/data for each burger in the database
-   <div class='col-md-6'>
+```<div class='col-md-6'>
         <h4>Menu Of Burgers:</h4>
         <ul id='toEat'>
-            {{!-- dynamically creates burger line/button for each burger found in the db --}}
             {{#each burgers}}
                 {{#unless devoured}}
-                    <li><p>{{burger_name}}</p><button class='updateMe' data-id={{id}} data-devour={{devoured}}>Devour</button></li>
+                    <li><p>{{burger_name}}</p><button class='updateMe' data-id={{id}} data-devour={{devoured}}>Devour</button> </li>
                 {{/unless}}
             {{/each}}
         </ul>
     </div>
+```
 
 ### Front End JQuery 
 On the front end, I used JQuery to manipulate the DOM based off user input. 
-   $.ajax('/api/burgers', {
-        type: 'post',
-        data: newBurger
-    }).then(function(burger) {
-        console.log('added new burger');
-        //dynamically creates devour buttons for newly added burgers
-        let li = $('<li>');
-        let p = $('<p>').text(newBurger.burger_name);
-        let button = $('<button>').text('Devour').addClass('updateMe').attr('data-id', burger.id).attr('data-devour', newBurger.devoured);
+```$.ajax('/api/burgers', {
+            type: 'post',
+            data: newBurger
+        }).then(function(burger) {
+            console.log('added new burger');
+            //dynamically creates devour buttons for newly added burgers
+            let li = $('<li>');
+            let p = $('<p>').text(newBurger.burger_name);
+            let button = $('<button>').text('Devour').addClass('updateMe').attr('data-id', burger.id).attr('data-devour', newBurger.devoured);
 
-        $(li).append(p, button);
-        $('#toEat').prepend(li);
-        $('#burgerInput').val('')
-    })
+            $(li).append(p, button);
+            $('#toEat').prepend(li);
+            $('#burgerInput').val('')
+        })
+```
 
 ### Models 
 I chose to keep my models separate from my routing in order to make things easier to scale, and create more legible code across each module.
-   let burger = {
+   ```let burger = {
     selectAll: function(cb) {
         orm.selectAll('burgers', function(res) {
             cb(res);
@@ -66,13 +67,14 @@ I chose to keep my models separate from my routing in order to make things easie
             cb(res);
         });
     }
+```
 
 ### Technologies Used
-   Express
-   Express Handlebars
-   ORM (Object Relational Modules)
-   MVC (Model View Controller)
-   JQuery
-   Bootstrap
-   MySQL
-   Node
+- Express
+- Express Handlebars
+- ORM (Object Relational Modules)
+- MVC (Model View Controller)
+- JQuery
+- Bootstrap
+- MySQL
+- Node
