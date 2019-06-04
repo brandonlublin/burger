@@ -11,11 +11,14 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//declares primary template language and primary view
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+//links express to routes
 app.use(routes);
 
+//callback listening for port connection, once made, logs connection port
 app.listen(PORT, function() {
     console.log("App now listening at localhost:" + PORT);
 });

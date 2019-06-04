@@ -1,27 +1,32 @@
 //here is where you will add the vanilla javascript/jquery to create the visual functionality of the page
 $(function() {
+    //event listener for add burger button
     $('#burgerMe').on('click', function(event) {
         event.preventDefault();
         createBurger();
         location.reload();
     });
+    //allows user to hit 'enter' after entering burger name
     $('#burgerInput').keypress(function(event){
-
+        //enter key number
         if (event.which === 13) {
             event.preventDefault();
             createBurger();
         }
     })
     function createBurger() {
+        //new burger object, stores each value in it's pertinent field in db.
         let newBurger = {
             burger_name: $('#burgerInput').val().trim(),
             devoured: 0
         }
+        //post data entered into database
         $.ajax('/api/burgers', {
             type: 'post',
             data: newBurger
         }).then(function(burger) {
             console.log('added new burger');
+            //dynamically creates devour buttons for newly added burgers
             let li = $('<li>');
             let p = $('<p>').text(newBurger.burger_name);
             let button = $('<button>').text('Devour').addClass('updateMe').attr('data-id', burger.id).attr('data-devour', newBurger.devoured);
@@ -32,6 +37,7 @@ $(function() {
         })
     }
     $('.updateMe').on('click', function() {
+        //allows user to update the name of any burger by clicking the 
         let burger = $(this).parent();
         let id = $(this).data('id');
         let devour = {devoured: $(this).data('devour')};

@@ -9,9 +9,11 @@ var connection = mysql.createConnection({
     database: 'burgers_db',
 });
 
+//uses jawsdb as primary connection if opened through heroku
 if (process.env.JAWSDB_URL) {   
     connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
+    //primary connection to database if jawsdb unable to connect
     connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',

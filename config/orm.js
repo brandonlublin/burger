@@ -40,24 +40,26 @@ let orm = {
             if (err) {
                 throw err;
             }
+            //call back function, done once the connection is made
             cb(result);
         });
     },
     insertOne: function (table, cols, vals, cb) {
+        //posts user input data into db
         let queryString = "INSERT INTO " + table + " (" + cols.toString() + ") VALUES (" + printQuestionMarks(vals.length) + ");"
-        //console.log("QUER",queryString)
-        //console.log("VAL", vals)
+
         connection.query(queryString, vals, function (err, result) {
             if (err) {
                 throw err;
             }
+            //call back function, done once the connection is made
             cb(result);
         });
     },
 
     updateOne: function (value, id, cb) {
         
-        
+        //update database query
         let queryString = "UPDATE burgers SET " + objToSql(value) + " WHERE " + objToSql(id) + ";"
 
         console.log(queryString);
@@ -65,21 +67,23 @@ let orm = {
             if (err) {
                 throw err;
             }
+            //call back function, done once the connection is made
             cb(result);
         });
     },
     deleteOne: function (table, id, cb) {
+        //delete data from db query
         let queryString = "DELETE FROM " + table + " WHERE " + id
 
         connection.query(queryString, function (err, result) {
             if (err) {
                 throw err;
             }
-
+            //call back function, done once the connection is made
             cb(result);
         });
     }
 };
 
-// Export the orm object for the model buger.js).
+// Export the orm object for the model burger.js
 module.exports = orm;

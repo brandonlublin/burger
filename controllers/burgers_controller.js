@@ -1,14 +1,16 @@
 let burger = require('../models/burger.js');
 module.exports = {
+    //function to pull back data from db.
     selectAll: function(req, res) {
         burger.selectAll(function (dbFind) {
             let handleObject = {
                 burgers: dbFind
             };
-            // console.log(handleObject);
+            //render data into html template 
             res.render('index', handleObject);
         });
     },
+    //insert function to post data from user entry directly into db.
     insertOne: function(req, res) {
         burger.insertOne(
             ['burger_name', 'devoured'],
